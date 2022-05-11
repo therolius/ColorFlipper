@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap');
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: content-box;
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    height: 100%;
+    transition: background-color 0.3s linear;
+}
+.logo{
+    text-align: center;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+
+}
+.logo-text{
+    font-size: 50px;
+    padding: 4vh;
+}
+.tip{
+    font-size: 25px;
+}
+.container{
+    text-align: center;
+    background-color: white;
+    width: 100vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+}
+.currentColorText{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin:20px;
+    font-size: 35px;
+}
+#shuffle{
+    background-color: transparent;
+    border:2px solid black;
+    border-radius: 20px;
+    margin:3vh;
+    padding: 1.5vh 10vh;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+}
+#colorTextRGB,
+#colorTextHEX,
+#colorTextHSL{
+    margin:10px;
+    cursor: pointer;
+}
+#info{
+    display: none;
+    text-align: center;
+    position:absolute;
+    bottom: 0;
+    left:50%;
+    transform: translate(-50%, -50%);
+    cursor: default;
+
+    &.active{
+        display: block;
+        animation-name: pop-out;
+        animation-duration: 3s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+    }
+
+}
+@keyframes pop-out {
+    100%{
+        opacity: 0;
+        bottom: 0;
+        transform: translate(-50%, -50%);
+    }
+    50%{
+        opacity: 1;
+        bottom: 13%;
+        transform: translate(-50%, -50%);
+    }
+    0%{
+        opacity: 0;
+        bottom: 0;
+        transform: translate(-50%, -50%);
+    }
+}
