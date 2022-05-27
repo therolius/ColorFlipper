@@ -55,37 +55,45 @@ body{
     cursor: pointer;
 }
 #info{
-    display: none;
+    opacity: 0;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 30px 60px;
+    border-radius: 2em;
     text-align: center;
     position:absolute;
+    transform: translateY();
     bottom: 0;
     left:50%;
     transform: translate(-50%, -50%);
     cursor: default;
-
-    &.active{
-        display: block;
-        animation-name: pop-out;
-        animation-duration: 3s;
-        animation-iteration-count: 1;
-        animation-fill-mode: forwards;
-    }
-
 }
-@keyframes pop-out {
+.anim-in{
+    animation: pop-in 1s ease-in-out forwards;
+}
+.anim-out{
+    animation: pop-out 1s ease-in-out forwards;
+}
+@keyframes pop-in {
     100%{
-        opacity: 0;
-        bottom: 0;
-        transform: translate(-50%, -50%);
-    }
-    50%{
         opacity: 1;
-        bottom: 13%;
+        bottom: 5%;
         transform: translate(-50%, -50%);
     }
     0%{
         opacity: 0;
         bottom: 0;
+        transform: translate(-50%, -50%);
+    }
+}
+@keyframes pop-out {
+    100%{
+        opacity: 0;
+        bottom: 0%;
+        transform: translate(-50%, -50%);
+    }
+    0%{
+        opacity: 1;
+        bottom: 5%;
         transform: translate(-50%, -50%);
     }
 }

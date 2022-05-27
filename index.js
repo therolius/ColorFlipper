@@ -3,15 +3,35 @@ let colorTextRGB = document.getElementById("colorTextRGB");
 let colorTextHEX = document.getElementById("colorTextHEX");
 let colorTextHSL = document.getElementById("colorTextHSL");
 let infoBox = document.getElementById("info");
+let copiedValue = document.getElementById("copied-value");
 
-function shuffleColor(){
+const maxRand = 256;
 
-    const maxRand = 256;
+let randR;
+let randG;
+let randB;
+
+let RGB;
+let HEX;
+let HSL;
+
+const calculateRGB = () => {
+    console.log("---RGB---");
     //---RGB---
-    let randR = parseInt(Math.floor(Math.random()*maxRand));
-    let randG = parseInt(Math.floor(Math.random()*maxRand));
-    let randB = parseInt(Math.floor(Math.random()*maxRand));
+    randR = parseInt(Math.floor(Math.random()*maxRand));
+    randG = parseInt(Math.floor(Math.random()*maxRand));
+    randB = parseInt(Math.floor(Math.random()*maxRand));
+
+    RGB = "RGB("+randR+","+randG+","+randB+")";
+
+    console.log("RGB: "+RGB);
+
+    return RGB;
+}
+
+const calculateHEX = () =>{
     //---HEX---
+    console.log("---HEX---");
     let hex1 = parseInt(randR/16);
     let hex2 = parseInt((randR/16-hex1)*16);
     let hex3 = parseInt(randG/16);
@@ -19,8 +39,12 @@ function shuffleColor(){
     let hex5 = parseInt(randB/16);
     let hex6 = parseInt((randB/16-hex5)*16);
 
-    let calculatedHEX = "#"+hex1.toString(16)+hex2.toString(16)+hex3.toString(16)+hex4.toString(16)+hex5.toString(16)+hex6.toString(16);
+    HEX = ("#"+hex1.toString(16)+hex2.toString(16)+hex3.toString(16)+hex4.toString(16)+hex5.toString(16)+hex6.toString(16)).toUpperCase();
 
+    console.log("HEX: "+HEX);
+}
+
+const calculateHSL = () =>{
     //---HSL---
     console.log("---HSL---");
     let hsl_r_value = (randR/255);
@@ -67,24 +91,33 @@ function shuffleColor(){
     HSL_L = Math.round(HSL_L*100);
 
     //---Result---
-    hsl_result = "HSL("+HSL_H+","+HSL_S+"%,"+HSL_L+"%)";
+    HSL = "HSL("+HSL_H+","+HSL_S+"%,"+HSL_L+"%)";
+
+    console.log("HSL: "+HSL);
+
+    return HSL;
+}
+function shuffleColor(){
+    calculateRGB();
+    calculateHEX();
+    calculateHSL();
 
     //---Style---
-    document.body.style.backgroundColor = 'rgb('+randR+','+randG+','+randB+')';
-    colorTextRGB.style.color = 'rgb('+randR+','+randG+','+randB+')';
-    colorTextRGB.style.transition = "color 1000ms linear";
-    colorTextHEX.style.color = 'rgb('+randR+','+randG+','+randB+')';
-    colorTextHEX.style.transition = "color 1000ms linear";
-    colorTextHSL.style.color = 'rgb('+randR+','+randG+','+randB+')';
-    colorTextHSL.style.transition = "color 1000ms linear";
-    shuffleButton.style.color = 'rgb('+randR+','+randG+','+randB+')';
-    shuffleButton.style.borderColor = 'rgb('+randR+','+randG+','+randB+')';
-    shuffleButton.style.transition = "1000ms linear";
+    document.body.style.backgroundColor = RGB;
+    colorTextRGB.style.color = RGB;
+    colorTextRGB.style.transition = "color 0.4s linear";
+    colorTextHEX.style.color = HEX;
+    colorTextHEX.style.transition = "color 0.4s linear";
+    colorTextHSL.style.color = HSL;
+    colorTextHSL.style.transition = "color 0.4s linear";
+    shuffleButton.style.color = RGB;
+    shuffleButton.style.borderColor = RGB;
+    shuffleButton.style.transition = "0.4s linear";
 
     //---Type Color---
-    colorTextRGB.innerHTML = "RGB("+randR+","+randG+","+randB+")";
-    colorTextHEX.innerHTML = calculatedHEX.toUpperCase();
-    colorTextHSL.innerHTML = hsl_result.toUpperCase();
+    colorTextRGB.innerHTML = RGB
+    colorTextHEX.innerHTML = HEX;
+    colorTextHSL.innerHTML = HSL;
 
     //---Hover effect---
     colorTextRGB.addEventListener("mouseenter",function(event){
@@ -93,7 +126,7 @@ function shuffleColor(){
     });
     colorTextRGB.addEventListener("mouseleave",function(event){
 
-        event.target.style.color = 'rgb('+randR+','+randG+','+randB+')';
+        event.target.style.color = RGB;
         event.target.style.transition = "0.4s";
     });
     colorTextHEX.addEventListener("mouseenter",function(event){
@@ -101,7 +134,7 @@ function shuffleColor(){
         event.target.style.transition = "0.4s";
     });
     colorTextHEX.addEventListener("mouseleave",function(event){
-        event.target.style.color = 'rgb('+randR+','+randG+','+randB+')';
+        event.target.style.color = RGB;
         event.target.style.transition = "0.4s";
     });
     colorTextHSL.addEventListener("mouseenter",function(event){
@@ -109,45 +142,98 @@ function shuffleColor(){
         event.target.style.transition = "0.4s";
     });
     colorTextHSL.addEventListener("mouseleave",function(event){
-        event.target.style.color = 'rgb('+randR+','+randG+','+randB+')';
+        event.target.style.color = RGB;
         event.target.style.transition = "0.4s";
     });
 }
 
 
 //---Copy on click---
-
+let isAnimationEnd = true;
 
 colorTextRGB.onclick = function() {
+
+    if(isAnimationEnd){
+        isAnimationEnd = false
+        infoBox.classList.add("anim-in");
+        copiedValue.innerHTML = RGB;
+        setTimeout(() => {
+            infoBox.classList.remove("anim-in");
+            infoBox.classList.add("anim-out");
+        }, 3000);
+        infoBox.classList.remove("anim-out");
+    }else{
+        return;
+    }
+    
+    infoBox.addEventListener("animationend" , () =>{
+        isAnimationEnd = true;
+    });
+    
     document.execCommand("copy");
   }
 colorTextRGB.addEventListener("copy", function(event) {
     event.preventDefault();
     if (event.clipboardData) {
         event.clipboardData.setData("text/plain", colorTextRGB.textContent);
-        console.log(event.clipboardData.getData("text"))
+        console.log("Copied: "+event.clipboardData.getData("text"))
     }
 });
 
-
-
 colorTextHEX.onclick = function() {
+    if(isAnimationEnd){
+        isAnimationEnd = false;
+        infoBox.classList.add("anim-in");
+        copiedValue.innerHTML = HEX;
+        setTimeout(() => {
+            infoBox.classList.remove("anim-in");
+            infoBox.classList.add("anim-out");
+        }, 3000);
+        infoBox.classList.remove("anim-out");
+    }else{
+        isAnimationEnd = false;
+        return;
+    }
+    
+    infoBox.addEventListener("animationend" , () =>{
+        isAnimationEnd = true;
+    });
+
     document.execCommand("copy");
   }
 colorTextHEX.addEventListener("copy", function(event) {
     event.preventDefault();
     if (event.clipboardData) {
         event.clipboardData.setData("text/plain", colorTextHEX.textContent);
-        console.log(event.clipboardData.getData("text"))
+        console.log("Copied: "+event.clipboardData.getData("text"))
     }
 });
 colorTextHSL.onclick = function() {
+    if(isAnimationEnd){
+        console.log("Animation Start")
+        isAnimationEnd = false
+        infoBox.classList.add("anim-in");
+        copiedValue.innerHTML = HSL;
+        setTimeout(() => {
+            infoBox.classList.remove("anim-in");
+            infoBox.classList.add("anim-out");
+        }, 3000);
+        infoBox.classList.remove("anim-out");
+    }else{
+        return;
+    }
+    
+    infoBox.addEventListener("animationend" , () =>{
+        isAnimationEnd = true;
+        console.log("Animation End")
+    });
+
     document.execCommand("copy");
   }
 colorTextHSL.addEventListener("copy", function(event) {
     event.preventDefault();
     if (event.clipboardData) {
         event.clipboardData.setData("text/plain", colorTextHSL.textContent);
-        console.log(event.clipboardData.getData("text"))
+        console.log("Copied: "+event.clipboardData.getData("text"))
     }
 });
